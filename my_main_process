@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker events --filter 'container=container_b' --filter 'status=die' --format  '{{ .Actor.Attributes.name }} {{.Status}}' | while read event
+docker events --filter 'container=container_b' --filter 'event=restart' --format  '{{ .Actor.Attributes.name }} {{.Status}}' | while read event
 
 do
 
