@@ -1,0 +1,11 @@
+#!/bin/sh
+
+docker events --filter 'container=container_b' --filter 'status=die' --format  '{{ .Actor.Attributes.name }} {{.Status}}' | while read event
+
+do
+
+   docker restart nginx
+   echo "$(date) reboot nginx" >> /tmp/log
+
+done
+

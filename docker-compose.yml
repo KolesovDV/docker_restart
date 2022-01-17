@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+
+  container_a:
+    image: nginx
+    container_name: container_b
+
+  container_b:
+    image: docker:tester
+    container_name: container_a
+    command: ["/my_wrapper_script.sh"]
+    #command: [ "docker", "events", "--filter", "'container=container_b'", "--filter", "'status=die'", "--format", "'{{ .Actor.Attributes.name }} {{.Status}}' "]#, " > ", "/tmp/log"]   
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /tmp/log:/tmp/log
