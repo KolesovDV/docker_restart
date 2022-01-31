@@ -1,10 +1,16 @@
 #!/bin/sh
 
-docker events --filter 'container=container_b' --filter 'event=restart' --format  '{{ .Actor.Attributes.name }} {{.Status}}' | while read event
+docker events --filter 'container=container_b' --filter 'event=die' --format  '{{ .Actor.Attributes.name }} {{.Status}}' | while read event
 
 do
+   status=""
+   until [[ ${status} == '"healthy"' ]]
+   do 
+    sleep 10
+    status="$(docker inspect container_b | jq '.[].State.Health.Status')"
+   done
 
-   docker restart nginx
+   docker restart container_a
    echo "$(date) reboot nginx" >> /tmp/log
 
 done
